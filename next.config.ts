@@ -1,9 +1,11 @@
 import type { NextConfig } from 'next'
+import { defineNextConfig } from '@aldoadi/website-template/config'
 
-// T2 walking skeleton: plain Next config, just proves transpilePackages works
-// with raw-TS distribution. Replaced by @aldoadi/website-template/config's
-// defineNextConfig() in T3.
+const deployTarget = process.env.DEPLOY_TARGET === 'github-pages' ? 'github-pages' : 'vercel'
+
 const nextConfig: NextConfig = {
+  ...defineNextConfig({ target: deployTarget, repoName: 'Website-template-starter' }),
+  // Library ships raw TS, no dist/ -- Next compiles it directly.
   transpilePackages: ['@aldoadi/website-template'],
 }
 
