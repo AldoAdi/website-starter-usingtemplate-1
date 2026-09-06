@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactElement, ReactNode } from 'react'
 import { ThemeProvider } from '@aldoadi/website-template/theme'
+import { GoogleAnalytics } from '@aldoadi/website-template/analytics'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -24,7 +25,13 @@ export default function RootLayout({
     // so the server-rendered markup and the hydrated DOM differ by design.
     <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground font-sans">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          {/* Renders nothing until the visitor grants consent, and nothing at
+              all when NEXT_PUBLIC_GA_ID is unset -- which is the normal
+              state locally. */}
+          <GoogleAnalytics />
+        </ThemeProvider>
       </body>
     </html>
   )

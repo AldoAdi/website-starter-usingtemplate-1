@@ -45,6 +45,13 @@ jobs:
       - run: npm run build
         env:
           DEPLOY_TARGET: github-pages
+          # A repository *variable*, not a secret. The Web3Forms access key
+          # identifies the destination inbox and is baked into the deployed
+          # HTML for anyone to read -- that is how the service works. Spam
+          # control is the honeypot plus Web3Forms' own filtering. Storing it
+          # as a secret would imply a secrecy it does not have.
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_KEY }}
+          NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
 
       # Pages serves through Jekyll unless told otherwise, and Jekyll skips
       # any path starting with an underscore -- which is the whole of

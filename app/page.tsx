@@ -1,7 +1,9 @@
 import type { ReactElement } from 'react'
 import {
   Card,
+  ContactForm,
   Container,
+  CookieBanner,
   CTA,
   FeatureGrid,
   Footer,
@@ -10,9 +12,14 @@ import {
   Section,
 } from '@aldoadi/website-template/components'
 
+// Public by design -- it names the destination inbox, it is not a secret.
+// Read from env rather than inlined so each site points at its own inbox.
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? ''
+
 const NAV_LINKS = [
   { label: 'Features', href: '#features' },
   { label: 'Get started', href: '#get-started' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 const LIB_REPO = 'https://github.com/AldoAdi/Website-template-lib'
@@ -79,8 +86,17 @@ export default function Home(): ReactElement {
             action={{ label: 'Read the source', href: LIB_REPO }}
           />
         </div>
+        <Section id="contact" ariaLabelledBy="contact-heading">
+          <Container className="max-w-xl">
+            <h2 id="contact-heading" className="mb-8 text-3xl font-bold tracking-tight">
+              Get in touch
+            </h2>
+            <ContactForm accessKey={WEB3FORMS_KEY} subject="Website template enquiry" />
+          </Container>
+        </Section>
       </main>
       <Footer links={FOOTER_LINKS} copyright="© 2026 Website Template" />
+      <CookieBanner />
     </>
   )
 }
