@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+/*
+ * Tailwind v4 does not scan node_modules by default. The library ships raw
+ * TSX with utility classes in it (no precompiled CSS), so its source has to
+ * be added explicitly or none of its components render styled.
+ */
+@source '../node_modules/@aldoadi/website-template/src';
