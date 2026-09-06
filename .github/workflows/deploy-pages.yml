@@ -1,0 +1,69 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# GITHUB_TOKEN needs pages:write to publish and id-token:write for the
+# deploy action's OIDC exchange. contents:read is all the checkout needs --
+# the library is a public repo, so nothing here requires a PAT.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it midway; queued
+# runs collapse to the newest, since only the latest commit matters.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.12'
+          cache: npm
+
+      # npm canonicalizes GitHub dependencies to git+ssh in the lockfile
+      # no matter which URL form package.json uses, and a hosted runner has
+      # no SSH key for github.com. Rewriting ssh -> https lets the library
+      # be fetched anonymously, which works because it is a public repo.
+      - name: Fetch GitHub dependencies over HTTPS, not SSH
+        run: git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+
+      # `npm ci` installs from the committed lockfile, so the library
+      # resolves to the exact pinned commit rather than whatever main
+      # happens to be.
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          DEPLOY_TARGET: github-pages
+
+      # Pages serves through Jekyll unless told otherwise, and Jekyll skips
+      # any path starting with an underscore -- which is the whole of
+      # _next/. Without this file the site deploys and every stylesheet and
+      # script 404s.
+      - run: touch out/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
