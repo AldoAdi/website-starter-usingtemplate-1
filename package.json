@@ -12,7 +12,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@aldoadi/website-template": "git+https://github.com/AldoAdi/Website-template-lib.git#586810ffa2a7cbbcbbd9792c0d9445eb3f538289",
+    "@aldoadi/website-template": "git+https://github.com/AldoAdi/Website-template-lib.git#6a794baa6e591e0eb0fa2d6370cb4d298cb438f6",
     "next": "^16.3.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

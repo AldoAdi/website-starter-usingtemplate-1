@@ -52,6 +52,11 @@ jobs:
           # as a secret would imply a secrecy it does not have.
           NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_KEY }}
           NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
+          # robots.txt defaults to disallowing everything when this is
+          # unset -- the safe default, so a preview build cannot quietly get
+          # indexed. This is the real production deploy, so opt in to being
+          # crawled. Without this line the live robots.txt blocks everyone.
+          NEXT_PUBLIC_SITE_ENV: production
 
       # Pages serves through Jekyll unless told otherwise, and Jekyll skips
       # any path starting with an underscore -- which is the whole of
