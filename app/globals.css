@@ -1,4 +1,9 @@
-@import 'tailwindcss';
+/*
+ * The library's theme.css pulls in Tailwind itself and defines the @theme
+ * token set plus the .dark overrides, so it is imported instead of
+ * 'tailwindcss' -- importing both would pull Tailwind in twice.
+ */
+@import '@aldoadi/website-template/theme.css';
 
 /*
  * Tailwind v4 does not scan node_modules by default. The library ships raw

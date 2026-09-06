@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactElement, ReactNode } from 'react'
+import { ThemeProvider } from '@aldoadi/website-template/theme'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -18,8 +19,13 @@ export default function RootLayout({
   children: ReactNode
 }): ReactElement {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    // suppressHydrationWarning is required by next-themes: its blocking
+    // inline script sets the theme class on <html> before React hydrates,
+    // so the server-rendered markup and the hydrated DOM differ by design.
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-background text-foreground font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   )
 }
