@@ -15,20 +15,27 @@ const NAV_LINKS = [
   { label: 'Get started', href: '#get-started' },
 ]
 
-const FOOTER_LINKS = [{ label: 'Source', href: 'https://github.com/AldoAdi/Website-template-lib' }]
+const LIB_REPO = 'https://github.com/AldoAdi/Website-template-lib'
 
+const FOOTER_LINKS = [{ label: 'Source', href: LIB_REPO }]
+
+// Each card carries an href so the sample exercises Card's stretched-link
+// path -- the whole card is clickable through the single link on its title.
 const FEATURES = [
   {
     title: 'One library, many sites',
     body: 'Analytics, theming, SEO and security live here. A new site installs the library and inherits all of it.',
+    href: `${LIB_REPO}/tree/main/src`,
   },
   {
     title: 'Themed by CSS variables',
     body: 'Every colour, radius and spacing step is a token. Override a handful in your own stylesheet and the whole site follows.',
+    href: `${LIB_REPO}/blob/main/src/theme/theme.css`,
   },
   {
     title: 'Static-export safe',
     body: 'Nothing needs a Node server, so the same code deploys to Vercel or straight to GitHub Pages.',
+    href: `${LIB_REPO}/blob/main/src/config/defineNextConfig.ts`,
   },
 ]
 
@@ -54,7 +61,12 @@ export default function Home(): ReactElement {
             </h2>
             <FeatureGrid>
               {FEATURES.map((feature) => (
-                <Card key={feature.title} title={feature.title} body={feature.body} />
+                <Card
+                  key={feature.title}
+                  title={feature.title}
+                  body={feature.body}
+                  href={feature.href}
+                />
               ))}
             </FeatureGrid>
           </Container>
@@ -64,7 +76,7 @@ export default function Home(): ReactElement {
           <CTA
             heading="Start a new site"
             body="Clone the starter, repoint the library pin, and you have a themed, analytics-ready site."
-            action={{ label: 'Read the source', href: 'https://github.com/AldoAdi/Website-template-lib' }}
+            action={{ label: 'Read the source', href: LIB_REPO }}
           />
         </div>
       </main>
