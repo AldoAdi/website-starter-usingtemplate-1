@@ -1,12 +1,12 @@
-import type { ReactElement } from "react";
-import type { Metadata } from "next";
-import { BookingConfirmed } from "@aldoadi/website-template/booking";
-import { Container, Section } from "@aldoadi/website-template/components";
+import type { ReactElement } from 'react'
+import type { Metadata } from 'next'
+import { BookingConfirmed } from '@aldoadi/website-template/booking'
+import { Container, Section } from '@aldoadi/website-template/components'
 
 export const metadata: Metadata = {
-  title: "Appointment confirmed",
+  title: 'Appointment confirmed',
   robots: { index: false, follow: true },
-};
+}
 
 /**
  * Where the scheduler sends a visitor after they finish booking, closing
@@ -27,9 +27,7 @@ export default function BookingConfirmedPage(): ReactElement {
       <Section>
         <Container className="max-w-xl text-center">
           <BookingConfirmed>
-            <h1 className="mb-4 text-3xl font-bold tracking-tight">
-              You&rsquo;re booked
-            </h1>
+            <h1 className="mb-4 text-3xl font-bold tracking-tight">You&rsquo;re booked</h1>
             <p className="text-muted-foreground">
               Your appointment is confirmed. We&rsquo;ll see you soon.
             </p>
@@ -37,5 +35,5 @@ export default function BookingConfirmedPage(): ReactElement {
         </Container>
       </Section>
     </main>
-  );
+  )
 }

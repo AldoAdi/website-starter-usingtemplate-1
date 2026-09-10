@@ -1,16 +1,16 @@
-import type { ReactElement } from "react";
-import type { Metadata } from "next";
-import { BookingRedirect } from "@aldoadi/website-template/booking";
-import { BOOKING_URL } from "../bookingConfig";
+import type { ReactElement } from 'react'
+import type { Metadata } from 'next'
+import { BookingRedirect } from '@aldoadi/website-template/booking'
+import { BOOKING_URL } from '../bookingConfig'
 
 // A redirector has no content to rank, and an indexed one reads to a search
 // engine as a doorway page. It is also deliberately absent from sitemap.ts.
 // The human-readable "book an appointment" page is what gets indexed; its
 // CTA points here.
 export const metadata: Metadata = {
-  title: "Booking",
+  title: 'Booking',
   robots: { index: false, follow: true },
-};
+}
 
 /**
  * The first-party booking route.
@@ -25,11 +25,8 @@ export default function BookPage(): ReactElement {
         providerUrl={BOOKING_URL}
         fallback={
           <p className="text-muted-foreground text-sm">
-            Not going anywhere?{" "}
-            <a
-              className="text-primary underline underline-offset-4"
-              href="tel:+15625550100"
-            >
+            Not going anywhere?{' '}
+            <a className="text-primary underline underline-offset-4" href="tel:+15625550100">
               Call us instead
             </a>
             .
@@ -37,5 +34,5 @@ export default function BookPage(): ReactElement {
         }
       />
     </main>
-  );
+  )
 }

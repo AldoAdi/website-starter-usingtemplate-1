@@ -4,12 +4,11 @@
 // only place the third-party scheduler is named. Every ad, every Google
 // Business Profile listing and every printed card points at /book instead,
 // so changing scheduler is a change here rather than a reprint.
-export const BOOKING_URL =
-  process.env.NEXT_PUBLIC_BOOKING_URL ?? "https://example.com/schedule";
+export const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL ?? 'https://example.com/schedule'
 
 // The site's own booking route. Never the scheduler URL -- handing a visitor
 // straight off-domain is exactly what this module exists to stop.
-export const BOOKING_PATH = "/book";
+export const BOOKING_PATH = '/book'
 
 // Sinks are not declared here. The library resolves them from the
 // environment (GA4 always; a first-party ingest sink when

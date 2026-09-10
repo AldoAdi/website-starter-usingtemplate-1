@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'react'
 import {
   Card,
   ContactForm,
@@ -8,65 +8,71 @@ import {
   FeatureGrid,
   Footer,
   Header,
+  CTA_ACTION_CLASSES,
   HERO_PRIMARY_ACTION_CLASSES,
   Hero,
   Section,
-} from "@aldoadi/website-template/components";
-import { BookingLink } from "@aldoadi/website-template/booking";
-import { BOOKING_PATH } from "./bookingConfig";
+} from '@aldoadi/website-template/components'
+import { BookingLink } from '@aldoadi/website-template/booking'
+import { BOOKING_PATH } from './bookingConfig'
 
 // Public by design -- it names the destination inbox, it is not a secret.
 // Read from env rather than inlined so each site points at its own inbox.
-const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "";
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? ''
+
+// A fictional practice. The sample is a dental site rather than an abstract
+// "starter" because the booking funnel only reads as real against a real
+// shape of business -- and because a demo you can show a client beats one
+// that needs explaining first.
+const PRACTICE = {
+  name: 'Bayside Family Dental',
+  phone: '(562) 555-0100',
+  phoneHref: 'tel:+15625550100',
+}
 
 const NAV_LINKS = [
-  { label: "Features", href: "#features" },
-  { label: "Get started", href: "#get-started" },
-  { label: "Contact", href: "#contact" },
-];
+  { label: 'Services', href: '#services' },
+  { label: 'New patients', href: '#new-patients' },
+  { label: 'Contact', href: '#contact' },
+]
 
-const LIB_REPO = "https://github.com/AldoAdi/Website-template-lib";
+const FOOTER_LINKS = [{ label: 'Privacy', href: '#privacy' }]
 
-const FOOTER_LINKS = [{ label: "Source", href: LIB_REPO }];
-
-// Each card carries an href so the sample exercises Card's stretched-link
-// path -- the whole card is clickable through the single link on its title.
-const FEATURES = [
+const SERVICES = [
   {
-    title: "One library, many sites",
-    body: "Analytics, theming, SEO and security live here. A new site installs the library and inherits all of it.",
-    href: `${LIB_REPO}/tree/main/src`,
+    title: 'General dentistry',
+    body: 'Cleanings, fillings and check-ups for the whole family. Evening slots on Thursdays.',
   },
   {
-    title: "Themed by CSS variables",
-    body: "Every colour, radius and spacing step is a token. Override a handful in your own stylesheet and the whole site follows.",
-    href: `${LIB_REPO}/blob/main/src/theme/theme.css`,
+    title: 'Cosmetic & Invisalign',
+    body: 'Whitening, veneers and clear aligners, planned around what you actually want changed.',
   },
   {
-    title: "Static-export safe",
-    body: "Nothing needs a Node server, so the same code deploys to Vercel or straight to GitHub Pages.",
-    href: `${LIB_REPO}/blob/main/src/config/defineNextConfig.ts`,
+    title: 'Same-day emergencies',
+    body: 'Chipped, knocked out or in pain? Call before noon and we will see you the same day.',
   },
-];
+]
 
-// Heading order is deliberate: Hero owns the page's only <h1>, each Section
-// heading is an <h2>, and Card titles sit at <h3> beneath their section.
+/**
+ * The sample page.
+ *
+ * Two booking CTAs on purpose, with different `location` values -- hero and
+ * the mid-page band. That is the first question anyone asks of funnel data
+ * ("which button actually earns bookings?") and it cannot be answered
+ * retroactively, so the placement is recorded from the first click.
+ *
+ * Heading order is deliberate: Hero owns the page's only <h1>, each Section
+ * heading is an <h2>, and Card titles sit at <h3> beneath their section.
+ */
 export default function Home(): ReactElement {
   return (
     <>
-      <Header
-        logo={<span className="font-bold">Website Template</span>}
-        links={NAV_LINKS}
-      />
+      <Header logo={<span className="font-bold">{PRACTICE.name}</span>} links={NAV_LINKS} />
       <main>
-        {/* The primary CTA is a BookingLink rather than Hero's own
-            primaryAction: a plain <Link> records nothing, and the click that
-            starts a booking is the one click on the page worth measuring.
-            `location` is what lets the funnel rank CTA placements later. */}
         <Hero
-          eyebrow="Starter"
-          headline="A shared template for every site you build"
-          subhead="Develop the common parts once, in one library, and consume them from a pinned git reference."
+          eyebrow="Long Beach, CA"
+          headline="Dentistry that fits around your week"
+          subhead="Same-day emergency slots, evening appointments, and a team that explains what it is doing and why."
           primaryActionSlot={
             <BookingLink
               href={BOOKING_PATH}
@@ -76,54 +82,49 @@ export default function Home(): ReactElement {
               Book an appointment
             </BookingLink>
           }
-          secondaryAction={{ label: "View features", href: "#features" }}
+          secondaryAction={{ label: 'See services', href: '#services' }}
         />
 
-        <Section id="features" ariaLabelledBy="features-heading">
+        <Section id="services" ariaLabelledBy="services-heading">
           <Container>
-            <h2
-              id="features-heading"
-              className="mb-8 text-3xl font-bold tracking-tight"
-            >
-              What the library gives you
+            <h2 id="services-heading" className="mb-8 text-3xl font-bold tracking-tight">
+              What we do
             </h2>
             <FeatureGrid>
-              {FEATURES.map((feature) => (
-                <Card
-                  key={feature.title}
-                  title={feature.title}
-                  body={feature.body}
-                  href={feature.href}
-                />
+              {SERVICES.map((service) => (
+                <Card key={service.title} title={service.title} body={service.body} />
               ))}
             </FeatureGrid>
           </Container>
         </Section>
 
-        <div id="get-started">
+        {/* Second CTA, second placement. Same funnel, different `location`. */}
+        <div id="new-patients">
           <CTA
-            heading="Start a new site"
-            body="Clone the starter, repoint the library pin, and you have a themed, analytics-ready site."
-            action={{ label: "Read the source", href: LIB_REPO }}
+            heading="New patients welcome"
+            body="Most insurance accepted. Your first visit covers an exam, X-rays and a cleaning plan."
+            action={{ label: 'Book an appointment', href: BOOKING_PATH }}
           />
         </div>
+
         <Section id="contact" ariaLabelledBy="contact-heading">
           <Container className="max-w-xl">
-            <h2
-              id="contact-heading"
-              className="mb-8 text-3xl font-bold tracking-tight"
-            >
+            <h2 id="contact-heading" className="mb-4 text-3xl font-bold tracking-tight">
               Get in touch
             </h2>
-            <ContactForm
-              accessKey={WEB3FORMS_KEY}
-              subject="Website template enquiry"
-            />
+            <p className="text-muted-foreground mb-8">
+              Prefer to talk? Call{' '}
+              <a className="text-primary underline underline-offset-4" href={PRACTICE.phoneHref}>
+                {PRACTICE.phone}
+              </a>
+              .
+            </p>
+            <ContactForm accessKey={WEB3FORMS_KEY} subject="Website enquiry" />
           </Container>
         </Section>
       </main>
-      <Footer links={FOOTER_LINKS} copyright="© 2026 Website Template" />
+      <Footer links={FOOTER_LINKS} copyright={`© 2026 ${PRACTICE.name}`} />
       <CookieBanner />
     </>
-  );
+  )
 }

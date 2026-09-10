@@ -51,6 +51,8 @@ jobs:
           # control is the honeypot plus Web3Forms' own filtering. Storing it
           # as a secret would imply a secrecy it does not have.
           NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_KEY }}
+          # Set one or the other, never both -- see .env.example.
+          NEXT_PUBLIC_GTM_ID: ${{ vars.NEXT_PUBLIC_GTM_ID }}
           NEXT_PUBLIC_GA_ID: ${{ vars.NEXT_PUBLIC_GA_ID }}
           # The scheduler /book hands off to. Unset means the placeholder in
           # bookingConfig.ts ships, so set this before pointing any ad at
