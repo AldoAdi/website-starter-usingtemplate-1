@@ -5,6 +5,11 @@ import { BASE_PATH, SITE_URL, TRAILING_SLASH } from './siteConfig'
 
 // T2 walking skeleton is a single page (see app/page.tsx) -- add an entry
 // here for each route the site grows beyond "/".
+//
+// /book and /book/confirmed are deliberately absent. A redirector has no
+// content to rank and reads to a search engine as a doorway page; both
+// routes also set robots: { index: false }. The human-readable "book an
+// appointment" page is what belongs here, pointing its CTA at /book.
 const ROUTES = [{ path: '/' }]
 
 // Required by `output: 'export'`: Next treats sitemap.ts/robots.ts as route
