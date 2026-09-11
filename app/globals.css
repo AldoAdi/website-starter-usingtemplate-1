@@ -11,3 +11,72 @@
  * be added explicitly or none of its components render styled.
  */
 @source '../node_modules/@aldoadi/website-template/src';
+
+/*
+ * This site's brand, overriding the library's defaults.
+ *
+ * It lives here rather than in the library on purpose: the library ships a
+ * neutral blue so a fresh clone looks deliberate, and a palette is the one
+ * thing every consuming site must own. Changing it upstream would repaint
+ * every other site on the next version bump.
+ *
+ * Only the tokens that differ are redeclared. Radii, spacing and the font
+ * stack come through from the library untouched.
+ */
+@theme {
+  /* Warm off-white rather than pure white: at full-page scale #ffffff reads
+     clinical in the bad sense, and the warm ground is what separates this
+     from the default-Tailwind look every template starts with. */
+  --color-background: #fbfaf8;
+  --color-foreground: #1c1917;
+
+  --color-primary: #0f766e;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #f0efec;
+  --color-secondary-foreground: #1c1917;
+
+  --color-muted: #f0efec;
+  --color-muted-foreground: #6b6560;
+
+  --color-accent: #e7f0ee;
+  --color-accent-foreground: #134e4a;
+
+  --color-border: #e3e0da;
+  --color-ring: #0f766e;
+
+  /* A second accent reserved for one job: same-day and emergency care. Kept
+     off everything else so that when it does appear it still means urgency
+     rather than decoration. */
+  --color-urgent: #c2410c;
+  --color-urgent-foreground: #ffffff;
+}
+
+/*
+ * Dark values. Same custom properties, so no component branches on theme.
+ * The primary lightens to teal-400 because #0f766e does not carry enough
+ * contrast against a dark ground, and its foreground flips to near-black
+ * for the same reason.
+ */
+.dark {
+  --color-background: #12100f;
+  --color-foreground: #f5f3f0;
+
+  --color-primary: #2dd4bf;
+  --color-primary-foreground: #0b1b19;
+
+  --color-secondary: #1f1c1a;
+  --color-secondary-foreground: #f5f3f0;
+
+  --color-muted: #1f1c1a;
+  --color-muted-foreground: #a8a29e;
+
+  --color-accent: #1e2f2c;
+  --color-accent-foreground: #99f6e4;
+
+  --color-border: #33302c;
+  --color-ring: #2dd4bf;
+
+  --color-urgent: #fb923c;
+  --color-urgent-foreground: #1c1917;
+}

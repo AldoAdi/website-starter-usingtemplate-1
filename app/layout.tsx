@@ -3,15 +3,19 @@ import type { ReactElement, ReactNode } from 'react'
 import { ThemeProvider } from '@aldoadi/website-template/theme'
 import { GoogleAnalytics, GoogleTagManager } from '@aldoadi/website-template/analytics'
 import { TrackingInspector } from '@aldoadi/website-template/components'
-import { AttributionCapture } from '@aldoadi/website-template/booking'
+import { AttributionCapture, StickyCallBar } from '@aldoadi/website-template/booking'
 import { getMetaSecurityTags } from '@aldoadi/website-template/security'
 import {
+  buildFaqPageSchema,
+  buildLocalBusinessSchema,
   buildMetadata,
   buildOrganizationSchema,
   buildWebSiteSchema,
   JsonLd,
 } from '@aldoadi/website-template/seo'
 import { SITE } from './siteConfig'
+import { BOOKING_PATH } from './bookingConfig'
+import { FAQS, OPENING_HOURS, PRACTICE } from './practice'
 import './globals.css'
 
 // Title template, description, canonical, Open Graph and Twitter card, all
@@ -69,6 +73,23 @@ export default function RootLayout({ children }: { children: ReactNode }): React
               never see it -- but it opens on any deploy, including
               production, without a rebuild. */}
           <TrackingInspector />
+          {/* Two buttons pinned to the bottom of small screens. Renders
+              nothing until the consent banner is answered -- it shares that
+              edge of the viewport with CookieBanner, and burying Accept and
+              Reject would mean consent could never be granted at all. */}
+          <StickyCallBar phone={PRACTICE.phone} bookHref={BOOKING_PATH} />
+          {/*
+            LocalBusiness is the one that earns its keep here: it is what puts
+            the address, the phone number and the opening hours into a local
+            search result, and it reads from the same `practice.ts` constants
+            the visible page renders, so the markup cannot drift from the page
+            it describes.
+
+            Deliberately absent: aggregateRating. The visible trust bar shows
+            a rating; marking it up would be a claim about reviews this site
+            collected about itself, which is excluded from review rich results
+            and invites a manual action rather than a star.
+          */}
           <JsonLd
             data={[
               buildOrganizationSchema({
@@ -76,6 +97,16 @@ export default function RootLayout({ children }: { children: ReactNode }): React
                 url: SITE.siteUrl,
               }),
               buildWebSiteSchema({ name: SITE.siteName, url: SITE.siteUrl }),
+              buildLocalBusinessSchema({
+                type: 'Dentist',
+                name: PRACTICE.name,
+                url: SITE.siteUrl,
+                address: PRACTICE.address,
+                telephone: PRACTICE.phone,
+                priceRange: '$$',
+                openingHours: OPENING_HOURS,
+              }),
+              buildFaqPageSchema({ items: [...FAQS] }),
             ]}
           />
         </ThemeProvider>
