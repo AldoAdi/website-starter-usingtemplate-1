@@ -4,12 +4,12 @@ import {
   Container,
   CTA,
   PageHeader,
-  PlaceholderImage,
   Prose,
   Section,
   CTA_ACTION_CLASSES,
 } from '@aldoadi/website-template/components'
 import { BookingLink } from '@aldoadi/website-template/booking'
+import { Photo } from '../../Photo'
 import {
   buildBreadcrumbSchema,
   buildMetadata,
@@ -54,9 +54,13 @@ export default function DoctorPage(): ReactElement {
 
       <Section ariaLabelledBy="bio-heading">
         <Container className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-          <PlaceholderImage
-            label={`Photo: ${DOCTOR.shortName}, portrait, in the practice rather than against a backdrop.`}
-            aspect="1 / 1"
+          <Photo
+            src="/images/dr-reyes.jpg"
+            alt={`${DOCTOR.name}, photographed in one of the practice's treatment rooms.`}
+            width={1200}
+            height={1200}
+            sizes="(min-width: 768px) 33vw, 100vw"
+            priority
             className="h-fit"
           />
           <Prose>
