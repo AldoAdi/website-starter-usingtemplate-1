@@ -86,33 +86,6 @@ export const OPENING_HOURS: readonly OpeningHoursInput[] = HOURS.filter(
     entry.days !== undefined && entry.opens !== undefined && entry.closes !== undefined,
 ).map((entry) => ({ days: entry.days, opens: entry.opens, closes: entry.closes }))
 
-export const SERVICES = [
-  {
-    title: 'Check-ups & cleanings',
-    body: 'Exams, hygiene and X-rays on a schedule that suits your mouth rather than a default six months.',
-  },
-  {
-    title: 'Fillings & crowns',
-    body: 'Tooth-coloured restorations, and same-visit crowns where the tooth allows it.',
-  },
-  {
-    title: 'Invisalign',
-    body: 'Clear aligners with a scan and a preview of the result before you commit to anything.',
-  },
-  {
-    title: 'Implants',
-    body: 'Placement and restoration under one roof, so nobody is coordinating between two offices.',
-  },
-  {
-    title: 'Whitening & veneers',
-    body: 'Planned around the one thing you actually want changed, not a full-mouth sales pitch.',
-  },
-  {
-    title: 'Emergencies',
-    body: 'Chipped, knocked out, or keeping you awake. Call before noon and we will see you today.',
-  },
-] as const
-
 export const FIRST_VISIT_STEPS = [
   {
     title: 'Book in 60 seconds',
@@ -212,3 +185,91 @@ export const TRUST_ITEMS = [
   { value: '6 insurers', label: 'In-network' },
   { value: 'Same day', label: 'For emergencies' },
 ] as const
+
+/**
+ * The clinician, and the page that introduces them.
+ *
+ * A named face is the strongest trust signal a local practice has, and it
+ * is the one piece of content a stock-photo template cannot fake. `bioPath`
+ * is declared here rather than built at the call site so the homepage link,
+ * the nav entry and the `Person` structured data all point at the same URL.
+ */
+export const DOCTOR = {
+  name: 'Dr Alana Reyes, DDS',
+  shortName: 'Dr Reyes',
+  jobTitle: 'DDS',
+  bioPath: '/about/dr-reyes',
+  alumniOf: 'UCLA School of Dentistry',
+  summary:
+    'UCLA School of Dentistry. Practising in Long Beach since 2008, and living about four blocks from the office.',
+  quote:
+    'Most people who walk in here have put it off for a while, and almost none of them need the thing they are dreading. My job is to tell you what is actually going on, what it costs, and what happens if you wait — and then let you decide.',
+  bio: [
+    'Dr Reyes qualified at UCLA in 2006 and has practised in Long Beach ever since, the last fourteen years in this building. She took the practice over from its founder in 2015 and has kept the parts that worked: long appointments, plain language, and a written price before anything starts.',
+    'Her clinical interest is in restoring teeth that other practices have offered to remove. She completed her implant training through the UCLA continuing education programme and places and restores implants here rather than referring them out.',
+    'Outside the practice she is on the water most weekends, usually badly, and coaches a junior sailing squad at Alamitos Bay.',
+  ],
+} as const
+
+/**
+ * Advertised offers.
+ *
+ * Every one carries its terms. A headline price with no conditions attached
+ * is the kind of claim that draws a regulator's attention in healthcare
+ * advertising, which is why `OfferCard` makes `terms` a required prop rather
+ * than an optional one.
+ */
+export const OFFERS = [
+  {
+    eyebrow: 'New patient offer',
+    title: '$75 cleaning, exam & X-rays',
+    body: 'A full first appointment — exam, hygiene, and a complete set of digital X-rays.',
+    terms:
+      '*New patients without insurance only. Excludes periodontal (deep) cleaning, which we will quote separately if it is what you need. Cannot be combined with other offers.',
+  },
+  {
+    eyebrow: 'New patient offer',
+    title: '$29 emergency exam & X-ray',
+    body: 'Seen the same day, with the problem diagnosed and the cost of fixing it quoted before anything starts.',
+    terms:
+      '*New patients only. Covers the examination and one X-ray; any treatment is quoted separately and is never started without your agreement.',
+  },
+] as const
+
+/**
+ * The three promises the hero makes, each one a thing the practice can
+ * actually be held to. Vague claims ("caring team", "state of the art") are
+ * deliberately absent -- every site in town makes them, so they distinguish
+ * nothing.
+ */
+export const VALUE_PROPS = [
+  'Thursday evenings until 7, so nobody books a day off',
+  'Same-day emergency slots held back every weekday morning',
+  'A written price, with your insurance already deducted, before anything starts',
+] as const
+
+/**
+ * Review and social profiles.
+ *
+ * These are also the `sameAs` targets in the structured data: they are how
+ * a search engine finds the ratings this site is careful not to claim for
+ * itself.
+ */
+export const SOCIALS = [
+  { label: 'Google', href: 'https://www.google.com/maps', icon: 'G' },
+  { label: 'Yelp', href: 'https://www.yelp.com', icon: 'Y' },
+  { label: 'Instagram', href: 'https://www.instagram.com', icon: 'IG' },
+] as const
+
+/**
+ * The map, as the two URLs every map block needs: one to embed, one to
+ * open. The embed URL is the `/maps/embed?pb=` form from Google's own
+ * "Share → Embed a map" dialog; an ordinary maps link will not render in a
+ * frame.
+ */
+export const MAP = {
+  embedUrl:
+    'https://www.google.com/maps/embed/v1/place?key=REPLACE_ME&q=4200+E+Ocean+Blvd+Long+Beach+CA+90803',
+  linkUrl: PRACTICE.mapsUrl,
+  title: `Map to ${PRACTICE.name}`,
+} as const
