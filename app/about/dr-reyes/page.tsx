@@ -57,8 +57,8 @@ export default function DoctorPage(): ReactElement {
           <Photo
             src="/images/dr-reyes.jpg"
             alt={`${DOCTOR.name}, photographed in one of the practice's treatment rooms.`}
-            width={1200}
-            height={1200}
+            width={1024}
+            height={1024}
             sizes="(min-width: 768px) 33vw, 100vw"
             priority
             className="h-fit"

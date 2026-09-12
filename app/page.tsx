@@ -86,8 +86,8 @@ export default function Home(): ReactElement {
           <Photo
             src="/images/reception.jpg"
             alt="The practice's reception area, with seating beside a window."
-            width={1600}
-            height={1200}
+            width={1200}
+            height={896}
             sizes="(min-width: 768px) 50vw, 100vw"
             priority
           />
@@ -110,8 +110,8 @@ export default function Home(): ReactElement {
           <Photo
             src="/images/patient-care.jpg"
             alt="A receptionist greeting a patient at the front desk."
-            width={1600}
-            height={1200}
+            width={1200}
+            height={896}
             sizes="(min-width: 768px) 50vw, 100vw"
           />
         }
@@ -218,8 +218,8 @@ export default function Home(): ReactElement {
           <Photo
             src="/images/dr-reyes.jpg"
             alt={`${DOCTOR.name}, photographed in one of the practice's treatment rooms.`}
-            width={1200}
-            height={1200}
+            width={1024}
+            height={1024}
             sizes="(min-width: 768px) 384px, 100vw"
             className="md:max-w-sm"
           />
@@ -361,8 +361,8 @@ export default function Home(): ReactElement {
           <Photo
             src="/images/technology.jpg"
             alt="A clinician using a handheld digital scanner, with the resulting 3D scan on a monitor alongside."
-            width={1600}
-            height={1200}
+            width={1200}
+            height={896}
             sizes="(min-width: 768px) 50vw, 100vw"
           />
         }
