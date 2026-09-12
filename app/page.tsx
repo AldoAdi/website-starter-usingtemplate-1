@@ -13,7 +13,6 @@ import {
   LogoStrip,
   MapEmbed,
   OfferCard,
-  PlaceholderImage,
   Reveal,
   SectionHeading,
   Section,
@@ -26,6 +25,7 @@ import {
   Hero,
 } from '@aldoadi/website-template/components'
 import { BookingLink, CallLink } from '@aldoadi/website-template/booking'
+import { Photo } from './Photo'
 import { buildFaqPageSchema, buildWebPageSchema, JsonLd } from '@aldoadi/website-template/seo'
 import { BOOKING_PATH } from './bookingConfig'
 import { SITE } from './siteConfig'
@@ -83,9 +83,13 @@ export default function Home(): ReactElement {
         }
         secondaryAction={{ label: 'See services', href: '#services' }}
         image={
-          <PlaceholderImage
-            label="Photo: the practice's own reception or treatment room, landscape. Replace before launch — stock dentistry photography is the fastest way to look like every other site in town."
-            aspect="4 / 3"
+          <Photo
+            src="/images/reception.jpg"
+            alt="The practice's reception area, with seating beside a window."
+            width={1200}
+            height={896}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            priority
           />
         }
       />
@@ -103,9 +107,12 @@ export default function Home(): ReactElement {
         ariaLabelledBy="promises-heading"
         mediaSide="end"
         media={
-          <PlaceholderImage
-            label="Photo: a real patient interaction — front desk, or a hygienist mid-appointment. Faces, not equipment."
-            aspect="4 / 3"
+          <Photo
+            src="/images/patient-care.jpg"
+            alt="A receptionist greeting a patient at the front desk."
+            width={1200}
+            height={896}
+            sizes="(min-width: 768px) 50vw, 100vw"
           />
         }
       >
@@ -208,9 +215,12 @@ export default function Home(): ReactElement {
       <SplitSection
         ariaLabelledBy="dentist-heading"
         media={
-          <PlaceholderImage
-            label={`Photo: ${DOCTOR.shortName}, portrait, in the practice rather than against a backdrop. A real face is the single biggest trust signal on a page like this.`}
-            aspect="1 / 1"
+          <Photo
+            src="/images/dr-reyes.jpg"
+            alt={`${DOCTOR.name}, photographed in one of the practice's treatment rooms.`}
+            width={1024}
+            height={1024}
+            sizes="(min-width: 768px) 384px, 100vw"
             className="md:max-w-sm"
           />
         }
@@ -348,9 +358,12 @@ export default function Home(): ReactElement {
         mediaSide="end"
         className="bg-secondary"
         media={
-          <PlaceholderImage
-            label="Photo: the scanner or the X-ray unit in use, with a person in frame. Equipment alone photographs as a stock catalogue."
-            aspect="4 / 3"
+          <Photo
+            src="/images/technology.jpg"
+            alt="A clinician using a handheld digital scanner, with the resulting 3D scan on a monitor alongside."
+            width={1200}
+            height={896}
+            sizes="(min-width: 768px) 50vw, 100vw"
           />
         }
       >
