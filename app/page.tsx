@@ -261,13 +261,19 @@ export default function Home(): ReactElement {
           <Carousel
             label="Patient reviews"
             items={TESTIMONIALS.map((testimonial) => (
-              <Testimonial
-                key={testimonial.author}
-                quote={testimonial.quote}
-                author={testimonial.author}
-                detail={testimonial.detail}
-                rating={testimonial.rating}
-              />
+              // `relative` gives Testimonial's absolutely positioned
+              // sr-only rating a containing block inside the scrolling track.
+              // Without it the span escapes the track's overflow clip and the
+              // page scrolls sideways on phones (620px wide at 320). Drop this
+              // wrapper once the library's Carousel puts `relative` on its <li>.
+              <div key={testimonial.author} className="relative h-full">
+                <Testimonial
+                  quote={testimonial.quote}
+                  author={testimonial.author}
+                  detail={testimonial.detail}
+                  rating={testimonial.rating}
+                />
+              </div>
             ))}
           />
         </Container>
@@ -308,13 +314,13 @@ export default function Home(): ReactElement {
       */}
       <Section ariaLabel="Emergency appointments" className="bg-urgent text-urgent-foreground">
         <Container className="flex flex-col items-center gap-4 text-center">
-          <p className="text-sm font-semibold tracking-wide uppercase opacity-90">
-            In pain right now?
-          </p>
+          {/* No opacity-90 on this band's text: it takes white on
+              --color-urgent from 5.1:1 to 4.48:1, under the 4.5:1 AA floor. */}
+          <p className="text-sm font-semibold tracking-wide uppercase">In pain right now?</p>
           <h2 className="text-3xl font-bold tracking-tight text-balance md:text-4xl">
             Call before noon, and we will see you today
           </h2>
-          <p className="max-w-2xl text-lg text-balance opacity-90">
+          <p className="max-w-2xl text-lg text-balance">
             Chipped, knocked out, or an abscess that kept you up. Emergency slots are held back
             every weekday morning for exactly this.
           </p>
