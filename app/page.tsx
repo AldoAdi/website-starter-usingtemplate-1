@@ -49,6 +49,13 @@ import {
 // Read from env rather than inlined so each site points at its own inbox.
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? ''
 
+// The rendered width of a Hero/SplitSection photo, measured in the browser:
+// full width less the container gutters on phones, half a column from md,
+// capped by the container at xl. `100vw` here made a 412px phone at 2.6x
+// ask for 1071px and download the full-size file for a 364px slot.
+const HALF_WIDTH_PHOTO_SIZES =
+  '(min-width: 1280px) 596px, (min-width: 768px) calc(50vw - 44px), calc(100vw - 48px)'
+
 /**
  * The home page.
  *
@@ -88,7 +95,7 @@ export default function Home(): ReactElement {
             alt="The practice's reception area, with seating beside a window."
             width={1200}
             height={896}
-            sizes="(min-width: 768px) 50vw, 100vw"
+            sizes={HALF_WIDTH_PHOTO_SIZES}
             priority
           />
         }
@@ -112,7 +119,7 @@ export default function Home(): ReactElement {
             alt="A receptionist greeting a patient at the front desk."
             width={1200}
             height={896}
-            sizes="(min-width: 768px) 50vw, 100vw"
+            sizes={HALF_WIDTH_PHOTO_SIZES}
           />
         }
       >
@@ -135,8 +142,8 @@ export default function Home(): ReactElement {
           <p className="text-muted-foreground text-lg text-pretty">
             We look after every age in a household, from a toddler&rsquo;s first tooth to a
             grandparent&rsquo;s implants, and we book appointments long enough to explain what we
-            found. Routine check-ups, same-day emergencies, and the restorative work other
-            practices refer out — all in one building, off one car park.
+            found. Routine check-ups, same-day emergencies, and the restorative work other practices
+            refer out — all in one building, off one car park.
           </p>
         </Container>
       </Section>
@@ -220,7 +227,7 @@ export default function Home(): ReactElement {
             alt={`${DOCTOR.name}, photographed in one of the practice's treatment rooms.`}
             width={1024}
             height={1024}
-            sizes="(min-width: 768px) 384px, 100vw"
+            sizes="(min-width: 768px) 384px, calc(100vw - 48px)"
             className="md:max-w-sm"
           />
         }
@@ -363,7 +370,7 @@ export default function Home(): ReactElement {
             alt="A clinician using a handheld digital scanner, with the resulting 3D scan on a monitor alongside."
             width={1200}
             height={896}
-            sizes="(min-width: 768px) 50vw, 100vw"
+            sizes={HALF_WIDTH_PHOTO_SIZES}
           />
         }
       >
