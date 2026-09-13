@@ -10,7 +10,12 @@ import {
   CTA_ACTION_CLASSES,
 } from '@aldoadi/website-template/components'
 import { BookingLink } from '@aldoadi/website-template/booking'
-import { buildBreadcrumbSchema, buildMetadata, buildWebPageSchema, JsonLd } from '@aldoadi/website-template/seo'
+import {
+  buildBreadcrumbSchema,
+  buildMetadata,
+  buildWebPageSchema,
+  JsonLd,
+} from '@aldoadi/website-template/seo'
 import { SITE } from '../siteConfig'
 import { BOOKING_PATH } from '../bookingConfig'
 import { SERVICES, SERVICES_PATH, servicePath } from '../services'
@@ -43,14 +48,24 @@ export default function ServicesPage(): ReactElement {
         lead={DESCRIPTION}
         breadcrumbs={CRUMBS}
         actionSlot={
-          <BookingLink href={BOOKING_PATH} location="services-hub-header" className={CTA_ACTION_CLASSES}>
+          <BookingLink
+            href={BOOKING_PATH}
+            location="services-hub-header"
+            className={CTA_ACTION_CLASSES}
+          >
             Book an appointment
           </BookingLink>
         }
       />
 
-      <Section ariaLabel="All services">
+      <Section ariaLabelledBy="all-services-heading">
         <Container>
+          {/* The cards title at <h3>; without an <h2> here the outline jumps
+              from the header's <h1>. Visually hidden: the header already
+              says "Our services", so a visible repeat adds nothing. */}
+          <h2 id="all-services-heading" className="sr-only">
+            All services
+          </h2>
           <FeatureGrid>
             {SERVICES.map((service) => (
               <Card
@@ -68,7 +83,11 @@ export default function ServicesPage(): ReactElement {
         heading="Not sure which you need?"
         body="Book a check-up and we will tell you — including which of these you do not need."
         actionSlot={
-          <BookingLink href={BOOKING_PATH} location="services-hub-cta" className={CTA_ACTION_CLASSES}>
+          <BookingLink
+            href={BOOKING_PATH}
+            location="services-hub-cta"
+            className={CTA_ACTION_CLASSES}
+          >
             Book an appointment
           </BookingLink>
         }
