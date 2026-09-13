@@ -46,7 +46,11 @@ export default function DoctorPage(): ReactElement {
         lead={DOCTOR.summary}
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: DOCTOR.shortName }]}
         actionSlot={
-          <BookingLink href={BOOKING_PATH} location="doctor-bio-header" className={CTA_ACTION_CLASSES}>
+          <BookingLink
+            href={BOOKING_PATH}
+            location="doctor-bio-header"
+            className={CTA_ACTION_CLASSES}
+          >
             {`Book with ${DOCTOR.shortName}`}
           </BookingLink>
         }
@@ -59,7 +63,7 @@ export default function DoctorPage(): ReactElement {
             alt={`${DOCTOR.name}, photographed in one of the practice's treatment rooms.`}
             width={1024}
             height={1024}
-            sizes="(min-width: 768px) 33vw, 100vw"
+            sizes="(min-width: 1280px) 398px, (min-width: 768px) calc(33.33vw - 30px), calc(100vw - 48px)"
             priority
             className="h-fit"
           />

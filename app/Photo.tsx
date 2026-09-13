@@ -1,6 +1,9 @@
 import type { ReactElement } from 'react'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
+import { preload } from 'react-dom'
 import Image from 'next/image'
-import { BASE_PATH } from './siteConfig'
+import { BASE_PATH, DEPLOY_TARGET } from './siteConfig'
 
 export interface PhotoProps {
   /** Root-relative path under `/public`, e.g. `'/images/reception.jpg'`. */
@@ -27,26 +30,43 @@ export interface PhotoProps {
 const PHOTO_CLASSES = 'h-auto w-full rounded-lg object-cover'
 
 /**
+ * Downscaled copies the static target can offer phones, as `<name>-<width>.jpg`
+ * beside the original. Make them with:
+ *
+ *   sips -Z 960 -s formatOptions 72 reception.jpg --out reception-960.jpg
+ *
+ * A missing copy is skipped, not linked, so a new photo without them still
+ * renders -- it just ships the full file to every screen.
+ */
+const VARIANT_WIDTHS = [640, 960] as const
+
+/** `srcset` of the copies that exist on disk, plus the original at its own width. */
+function staticSrcSet(src: string, width: number): string {
+  const dot = src.lastIndexOf('.')
+  const variants = VARIANT_WIDTHS.filter((w) => w < width)
+    .map((w) => ({ w, path: `${src.slice(0, dot)}-${w}${src.slice(dot)}` }))
+    .filter(({ path }) => existsSync(join(process.cwd(), 'public', path)))
+  return [...variants, { w: width, path: src }]
+    .map(({ w, path }) => `${BASE_PATH ?? ''}${path} ${w}w`)
+    .join(', ')
+}
+
+/**
  * A site photograph, with the deploy target's `basePath` applied.
  *
- * That prefix is the whole reason this component exists. On the GitHub
- * Pages target the site is served from `/<repo>/`, and a `/public` file
- * referenced as `/images/x.jpg` is not there -- it is at
- * `/<repo>/images/x.jpg`.
+ * On the GitHub Pages target the site is served from `/<repo>/`, and a
+ * `/public` file referenced as `/images/x.jpg` is not there -- it is at
+ * `/<repo>/images/x.jpg`. Prefixing here means no page has to remember, and
+ * `BASE_PATH` is `undefined` on Vercel so the same call renders unprefixed.
  *
- * `next/image` does **not** fix this for us. It applies `basePath` to the
- * optimizer URL it generates, and the static target sets
- * `images.unoptimized`, which passes `src` straight through to the `<img>`
- * untouched. So the images work on Vercel, 404 on Pages, and nothing in the
- * build says a word about it -- verified by reading the exported HTML, not
- * assumed from the documentation.
+ * `next/image` does **not** fix the prefix for us: the static target sets
+ * `images.unoptimized`, which passes `src` straight through untouched.
+ * `assetPrefix` does not cover it either -- that is `_next/*` output only.
  *
- * `assetPrefix` does not cover it either: that applies to `_next/*` build
- * output, not to files in `/public`.
- *
- * Prefixing here rather than at each call site means no page has to
- * remember, and `BASE_PATH` is `undefined` on Vercel so the same call
- * renders an unprefixed src there.
+ * `images.unoptimized` also drops `srcset` (and overwrites one passed in),
+ * so every phone downloaded the 1200px original. The static target therefore
+ * renders a plain `<img>` with a `srcset` of pre-built copies. Vercel keeps
+ * `next/image`, whose optimizer generates its own.
  */
 export function Photo({
   src,
@@ -57,15 +77,45 @@ export function Photo({
   priority = false,
   className,
 }: PhotoProps): ReactElement {
+  const classes = className ? `${PHOTO_CLASSES} ${className}` : PHOTO_CLASSES
+  const fullSrc = `${BASE_PATH ?? ''}${src}`
+
+  if (DEPLOY_TARGET !== 'github-pages') {
+    return (
+      <Image
+        src={fullSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        sizes={sizes}
+        priority={priority}
+        className={classes}
+      />
+    )
+  }
+
+  const srcSet = staticSrcSet(src, width)
+  if (priority) {
+    // The preload next/image used to emit, now carrying the srcset so a phone
+    // does not preload the full-size file it will not use.
+    preload(fullSrc, { as: 'image', imageSrcSet: srcSet, imageSizes: sizes, fetchPriority: 'high' })
+  }
+
   return (
-    <Image
-      src={`${BASE_PATH ?? ''}${src}`}
+    // srcSet and sizes before src: when React creates this element on the
+    // client, it sets attributes in prop order, and a src set first starts
+    // (then aborts) a download of the full-size file.
+    <img
+      srcSet={srcSet}
+      sizes={sizes}
+      src={fullSrc}
       alt={alt}
       width={width}
       height={height}
-      sizes={sizes}
-      priority={priority}
-      className={className ? `${PHOTO_CLASSES} ${className}` : PHOTO_CLASSES}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : undefined}
+      decoding="async"
+      className={classes}
     />
   )
 }
