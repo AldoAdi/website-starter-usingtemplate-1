@@ -261,19 +261,13 @@ export default function Home(): ReactElement {
           <Carousel
             label="Patient reviews"
             items={TESTIMONIALS.map((testimonial) => (
-              // `relative` gives Testimonial's absolutely positioned
-              // sr-only rating a containing block inside the scrolling track.
-              // Without it the span escapes the track's overflow clip and the
-              // page scrolls sideways on phones (620px wide at 320). Drop this
-              // wrapper once the library's Carousel puts `relative` on its <li>.
-              <div key={testimonial.author} className="relative h-full">
-                <Testimonial
-                  quote={testimonial.quote}
-                  author={testimonial.author}
-                  detail={testimonial.detail}
-                  rating={testimonial.rating}
-                />
-              </div>
+              <Testimonial
+                key={testimonial.author}
+                quote={testimonial.quote}
+                author={testimonial.author}
+                detail={testimonial.detail}
+                rating={testimonial.rating}
+              />
             ))}
           />
         </Container>

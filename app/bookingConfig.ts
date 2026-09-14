@@ -4,7 +4,29 @@
 // only place the third-party scheduler is named. Every ad, every Google
 // Business Profile listing and every printed card points at /book instead,
 // so changing scheduler is a change here rather than a reprint.
-export const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL ?? 'https://example.com/schedule'
+//
+// `||`, not `??`: an unset GitHub Actions variable arrives as an empty
+// string, which `??` keeps -- and /book would then redirect to itself.
+export const BOOKING_URL = assertHttpsUrl(
+  process.env.NEXT_PUBLIC_BOOKING_URL || 'https://example.com/schedule',
+)
+
+// This value is handed to location.replace() and an <a href>, so a
+// `javascript:` or `data:` URL here is script execution on our origin. The
+// library passes an unparsable URL through untouched, so the check lives at
+// this boundary and fails the build rather than shipping.
+function assertHttpsUrl(raw: string): string {
+  let url: URL
+  try {
+    url = new URL(raw)
+  } catch {
+    throw new Error(`NEXT_PUBLIC_BOOKING_URL is not an absolute URL: ${raw}`)
+  }
+  if (url.protocol !== 'https:') {
+    throw new Error(`NEXT_PUBLIC_BOOKING_URL must use https: ${raw}`)
+  }
+  return raw
+}
 
 // The site's own booking route. Never the scheduler URL -- handing a visitor
 // straight off-domain is exactly what this module exists to stop.

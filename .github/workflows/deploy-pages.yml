@@ -22,10 +22,17 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Actions are pinned to commit SHAs, not tags: a tag can be moved to
+    # malicious code, and this workflow holds pages:write and id-token:write.
+    # Bump by resolving the new tag with `git ls-remote` and updating both.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # Nothing later pushes, so do not leave the token in .git/config
+          # for every subsequent step (and every dependency) to read.
+          persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22.12'
           cache: npm
@@ -39,8 +46,17 @@ jobs:
 
       # `npm ci` installs from the committed lockfile, so the library
       # resolves to the exact pinned commit rather than whatever main
-      # happens to be.
-      - run: npm ci
+      # happens to be. Lifecycle scripts are blocked by the committed .npmrc
+      # (ignore-scripts=true); --ignore-scripts repeats it here so deleting
+      # that file cannot silently turn them back on in the deploy.
+      - run: npm ci --ignore-scripts
+
+      # Fail the deploy on a known high/critical advisory in what ships, and
+      # on a registry package whose signature does not verify. The library is
+      # a git dependency, so it has no registry signature -- its pin is the
+      # commit SHA in package-lock.json.
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm audit signatures
 
       - run: npm run build
         env:
@@ -70,9 +86,9 @@ jobs:
       # script 404s.
       - run: touch out/.nojekyll
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: out
 
@@ -84,4 +100,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
